@@ -1,0 +1,118 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Edit Inspiring Video')
+
+@section('content')
+
+@include('admin.layouts.header')
+<style>
+    select.selectpicker { display:none; /* Prevent FOUC */}
+</style>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>Edit Inspiring Video</h1>
+    </section>
+    <section class="content">   
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit Inspiring Video</h3>
+                        <div class="pull-right">
+                            <a href="{!! url('/admin/featuredvideolist'); !!}">{{ Form::button('Back', ['class' => 'btn btn-default']) }}</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    @if (\Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ \Session::get('success') }}</p>
+                    </div>
+                    @endif
+
+                    {{ Form::model($fe_video, ['method' => 'post','url' => ['/admin/edit-featured-video', @$fe_video->id] ,'files' => true]) }}
+                    {{csrf_field()}}
+
+                    <div class="box-body">
+                        <div class="row form-group">
+
+                            <div class="col-md-12 form-group">
+                                {{ Form::label('name', 'Title') }}<span class="required">*</span>
+                                <?php
+                                 $sessionlist = array(
+                                    "" => "Select",
+                                    "GREAT INDIAN SCHOOLS"           => "GREAT INDIAN SCHOOLS",
+                                    "GREAT INDIAN INSTITUTES"        => "GREAT INDIAN INSTITUTES",
+                                    "EDUCATION EVANGELIST OF INDIA"   => "EDUCATION EVANGELIST OF INDIA"
+                                );
+                                ?>
+                                {{ Form::select('title',@$sessionlist ,@$fe_video->title, ['class' => 'form-control','required'=>'required']) }}
+                            </div>
+                            <!--                             <div class="col-md-12 form-group">
+                                                            {{ Form::label('name', 'Episode') }}<span class="required">*</span>
+                            <?php
+                            $eplist = array();
+                            for ($i = 1; $i <= 15; $i++) {
+                                $eplist[$i . ' Episode'] = $i . ' Episode';
+                            }
+                            ?>
+                                                             {{ Form::select('episode',@$eplist ,@$fe_video->episode, ['class' => 'form-control','required'=>'required']) }}
+                                                        </div>-->
+                            <div class="col-md-12 form-group">
+                                {{ Form::label('name', 'Institution/School Name') }}<span class="required">*</span>
+                                {{ Form::text('name',@$fe_video->name, ['placeholder' => 'Institution/School Name', 'class' => 'form-control ','required'=>'required']) }}
+                            </div>
+                            <div class="col-md-12 form-group">
+                                {{ Form::label('name', 'Location Name') }}
+                                {{ Form::text('location',@$fe_video->location, ['placeholder' => 'Location Name', 'class' => 'form-control ']) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ Form::label('Video Thumbnail', 'Video Thumbnail') }}<span class="required">*</span>
+                                @if(@$fe_video->thumb!='')
+                                <a href="{{URL::asset("/public/thumbnail_images/".@$fe_video->thumb)}}" target="blank">View</a>
+                                @endif
+                                <input type="file" name="video_thumb" class="form-control imagefl">
+
+                            </div>
+                            <div class="col-md-12 form-group">
+                                {{ Form::label('designation', 'Video Link') }}<span class="required">*</span>
+                                {{ Form::text('video_link', @$fe_video->video_link, ['placeholder' => 'Designation', 'class' => 'form-control ','required'=>'required']) }}
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box-footer text-right">
+                                {{ Form::submit('Update', ['class' => 'btn btn-warning']) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {!! Form::close() !!}
+                </div>
+                <!-- /.box --> 
+            </div>
+        </div>
+    </section> 
+</div>
+
+<!-- /.content-wrapper -->
+
+@include('admin.layouts.footer')
+
+@endsection
+
+
+
+

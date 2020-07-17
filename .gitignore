@@ -1,0 +1,7 @@
+/node_modules
+/public/hot
+/storage/*
+/storage/logs
+/node_modules
+/.env
+/vendor/*
